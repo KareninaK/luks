@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<title>Ejemplo de como guardar datos en la base de datos del navegador</title>
+ 
+	<script>
+	
+	function guardar()
+	{
+		// Guardamos el nombre y apellido en la base de datos del navegador
+		localStorage.setItem("nombre", document.getElementById("nombre").value);
+		localStorage.setItem("apellido", document.getElementById("apellido").value);
+ 
+		mostrarDatos();
+	}
+ 
+	/**
+	 * Esta función elimina el apellido de la base de datos
+	 */
+	function eliminarImagen()
+	{
+		// Eliminamos el apellido de la base de datos del navegador
+		localStorage.removeItem("apellido");
+ 
+		mostrarDatos();
+	}
+ 
+	/**
+	 * Esta función elimina toda la base de datos
+	 */
+	function eliminar()
+	{
+		// Eliminamos toda la base de datos del navegador
+		localStorage.clear();
+ 
+		mostrarDatos();
+	}
+ 
+	/**
+	 * Esta función muestra los datos guardados en la base de datos
+	 */
+	function mostrarDatos()
+	{
+		// Leemos los valores de las variables del navegador y las ponemos
+		// en una variable para posteriormente mostrarlo en el navegador
+		var resultado="Nombre: "+localStorage.getItem("nombre");
+		resultado+="<br>Apellido: "+localStorage.getItem("apellido");
+ 
+		document.getElementById("resultado").innerHTML=resultado;
+	}
+ 
+	window.onload=function()
+	{
+		// Cada vez que se inicia el navegador, mostramos los datos de
+		// la base de datos.
+		mostrarDatos();
+ 
+		// Cuando cargamos la pagina, si las variables tienen valor, lo ponemos
+		// en el formulario
+		if(localStorage.getItem("nombre")!=null)
+			document.getElementById("nombre").value=localStorage.getItem("nombre");
+		if(localStorage.getItem("apellido")!=null)
+			document.getElementById("apellido").value=localStorage.getItem("apellido");
+	}
+	</script>
+ 
+	<style>
+	input[type=button] {width:280px;}
+	</style>
+</head>
+ 
+<body>
+ 
+<h1>Ejemplo de como guardar datos en la base de datos del navegador</h1>
+ 
+<p>Ejemplo de la utilización de LocalStorage para guardar datos de forma indefinida en el navegador del usuarios.
+<br>nos permite guardar entre 5 y 10 Mb dependiendo del navegador.</p>
+ 
+<form onSubmit="return false;">
+	Indicanos tu nombre: <input type="text" name="nombre" id="nombre">
+	<br>Indicanos tu apellido: <input type="text" name="apellido" id="apellido">
+ 
+	<br><input type="button" value="Guardar los datos en el Navegador" onclick="guardar()">
+	<br><input type="button" value="Eliminar solo el apellido del Navegador" onclick="eliminarApellido()">
+	<br><input type="button" value="Eliminar los datos del Navegador" onclick="eliminar()">
+ 
+	<br><br>
+	Cada vez que abramos esta página, estaran nuestros datos guardados en ella.
+	Los datos guardados en la base de datos del navegador son:
+	<div id="resultado"></div>
+</form>
+ 
+</body>
+</html>
+
+
+function preview(e)
+{
+	if(e.files && e.files[0])
+	{
+		// Comprobamos que sea un formato de imagen
+		if (e.files[0].type.match('image.*')) {
+			var imagen = document.getElementById('imagen');
+			// Inicializamos un FileReader. permite que las aplicaciones web lean ficheros (o información en buffer) almacenados en el cliente de forma asíncrona
+			var reader=new FileReader();
+			reader.readAsDataURL(imagen.files[0]);
+ 
+			// El evento onload se ejecuta cada vez que se ha leido el archivo correctamente
+			reader.onload=function(e) {
+				document.getElementById("preview").innerHTML="<img witdth='100px' height='100px' src='"+e.target.result+"'>";
+			}
+ 
+			// El evento onerror se ejecuta si ha encontrado un error de lectura
+			reader.onerror=function(e) {
+				document.getElementById("preview").innerHTML="Error de lectura";
+			}
+ 
+			// indicamos que lea la imagen seleccionado por el usuario de su disco duro
+			reader.readAsDataURL(e.files[0]);
+		}else{
+			// El formato del archivo no es una imagen
+			document.getElementById("preview").innerHTML="No es un formato de imagen";
+		}
+	}
+}
