@@ -5,10 +5,13 @@ include ('conexion.php');
     $desc   =(isset($_POST['descrip'])) ? $_POST['descrip']  : "";
     $link   =(isset($_POST['link']))    ? $_POST['link']     : "";
 
+    $codigo=substr($link , 32);    
+    
     $accion =(isset($_POST['accion']))  ? $_POST['accion']   : "";
+    
     switch ($accion){
         case"Agregar":
-            $sql = "INSERT INTO videos (titulo, descripcion, link) VALUES ('$titulo', '$desc', '$link')";
+            $sql = "INSERT INTO videos (titulo, descripcion, link) VALUES ('$titulo', '$desc', '$codigo')";
             $res = $base->prepare($sql);
             $res->execute();
         break;
@@ -78,18 +81,15 @@ include ('conexion.php');
                     </tr>
                 </thead>
                 <?php 
-                foreach ($lista as $result ) {	
-                $titulo = $result['titulo'];
-                $desc= $result['descripcion'];	
-                $link= "/watch?v=nSDgHBxUbVQ&list=RDviimfQi_pUw&index=20";
-
-                ?>		
+              foreach ($lista as $result ) {
+                $video = $result['link'];
+                ?>              
                     <tr>
-                        <td> <?php echo $titulo  ?> </td>
-                        <td> <?php if($desc!=''){echo $desc ; } ?></td>
-                        <td> <iframe width="500" height="500" src="'https://www.youtube.com/embed'.'<?php echo $link; ?>'"></iframe> </td>
-                            <!-- <?php //echo $result['link'];  ?> </td> -->
-                        <td>
+                        <td> <?php echo $result['titulo'];  ?> </td>
+                        <td> <?php if($result['descripcion']!=''){echo $result['descripcion'] ; } ?></td>
+                        <td> <?php echo "<iframe width=\"500\" height=\"500\" src=\"https://www.youtube.com/embed/$video\"></iframe>"; ?></td>
+                        <!-- <td> <?php// echo $result['link'];  ?> </td> -->
+                    <td>
                             <form accion="" method="POST">	
                                 <input type="hidden" name="id" value="<?php echo $result['id']; ?>">				
                                 <input type="hidden" name="titulo" value="<?php echo $result['titulo']; ?>">
@@ -107,4 +107,4 @@ include ('conexion.php');
 
     </body>
 </html>
-
+<?php //var_dump($codigo);exit;?>
