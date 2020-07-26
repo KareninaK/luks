@@ -3,9 +3,10 @@ include ('../conexion.php');
 
 $id     = (isset($_POST['id']))      ? $_POST['id']       : "";
 $texto  = (isset($_POST['editor']))  ? $_POST['editor']   : "";
-$accion = (isset($_POST['accion']))  ? $_POST['accion']   : "";
+//$accion = (isset($_POST['accion']))  ? $_POST['accion']   : "";
 
 $sqlM = "UPDATE noticias SET  contenido='$texto' WHERE id='$id'";
+//var_dump($sqlM);exit;
 $result = $base->prepare($sqlM);
 $result->execute();
 
@@ -24,10 +25,6 @@ if($row == 0){
         $texto  = $result['contenido'];   
     }
 }
-$sqlS = "SELECT * FROM noticias ORDER BY id desc";
-
-$res = $base->prepare($sqlS);
-$res->execute();
 
 ?>
 
@@ -38,16 +35,40 @@ $res->execute();
     <title></title>
     <script src="ckeditor.js"></script>
   </head>
-
   <body>
-    <form action="" method="post" enctype="multipart/form-data">
-      <input type="hidden" name="id" placeholder="" id="id" value="<?php echo $id;?>">
-      <textarea class="ckeditor" name="editor" value="<?php echo $texto ?>"></textarea>
+    <form action="" method="post" >
+      <input type="hidden" name="id" value="<?php echo $id; ?>">
+      <textarea class="ckeditor" name="editor" ><?php echo $texto; ?></textarea>
+      <?php
+      // var_dump($id);
+      // var_dump($texto);exit;
+      ?>
       <input type="submit" name="accion" value="Guardar">
- 
-    <a href="index.php"><input type="button" value="Volver"></a>
-                             
-    </form>
-      			
+      <a href="index.php"><input type="button" value="Volver"></a>                     
+    </form>  
+    <div>
+      <table>
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Contenido</td>                    
+            </tr>
+        </thead>
+        <?php 
+        foreach ($lista as $result ) {?>       
+            <tr>
+                <td> <?php echo $id;  ?> </td>
+                <td> <?php echo $texto; ?></td>
+                <td>
+                    <form accion="" method="POST">  
+                        <input type="hidden" name="id" value="<?php echo $result['id']; ?>">    
+                        <input type="hidden" name="titulo" value="<?php  $result['contenido']; ?>">
+                    </form>
+                </td>
+            </tr>     
+        <?php       
+        } ?>
+      </table>
+    </div>      	
   </body>
 </html>
