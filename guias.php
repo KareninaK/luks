@@ -5,10 +5,12 @@ include ('conexion.php');
     $desc   =(isset($_POST['descrip'])) ? $_POST['descrip']  : "";
     $link   =(isset($_POST['link']))    ? $_POST['link']     : "";
 
+    $codigo=substr($link , 32);    
+    
     $accion =(isset($_POST['accion']))  ? $_POST['accion']   : "";
     switch ($accion){
         case"Agregar":
-            $sql = "INSERT INTO guias (titulo, descripcion, link) VALUES ('$titulo', '$desc', '$link')";
+            $sql = "INSERT INTO guias (titulo, descripcion, link) VALUES ('$titulo', '$desc', '$codigo')";
             $res = $base->prepare($sql);
             $res->execute();
         break;
@@ -77,18 +79,19 @@ include ('conexion.php');
                     </tr>
                 </thead>
                 <?php 
-                foreach ($lista as $result ) {?>				
+                foreach ($lista as $result ) {
+                    $video = $result['link'];?>				
                     <tr>
                         <td> <?php echo $result['titulo'];  ?> </td>
                         <td> <?php if($result['descripcion']!=''){echo $result['descripcion'] ; } ?></td>
-                        <td> <?php echo $result['link'];  ?> </td>
+                        <td> <?php echo "<iframe width=\"500\" height=\"500\" src=\"https://www.youtube.com/embed/$video\"></iframe>";  ?> </td>
                     <td>
                         <form accion="" method="POST">	
                             <input type="hidden" name="id" value="<?php echo $result['id']; ?>">				
                             <input type="hidden" name="titulo" value="<?php echo $result['titulo']; ?>">
                             <input type="hidden" name="descripcion" value="<?php echo $result['descripcion']; ?>">
                             <input type="hidden" name="link" value="<?php echo $result['link']; ?>">
-                            <a href="modificar.php?id=<?php echo $result['id']; ?>"><input type="button" value="Modificar"></a>
+                            <a href="mod-guias.php?id=<?php echo $result['id']; ?>"><input type="button" value="Modificar"></a>
                             <button type="submit" name="accion" value="Eliminar">Eliminar</button>
                         </form>
                     </td>

@@ -4,8 +4,9 @@ include ('conexion.php');
     $titulo =(isset($_POST['titulo']))  ? $_POST['titulo']   : "";
     $desc   =(isset($_POST['descrip'])) ? $_POST['descrip']  : "";
     $link   =(isset($_POST['link']))    ? $_POST['link']     : "";
+    $codigo=substr($link , 32);  
 
-    $sqlM = "UPDATE guias SET titulo='$titulo', descripcion='$desc', link='$link' WHERE ID='$id'";
+    $sqlM = "UPDATE guias SET titulo='$titulo', descripcion='$desc', link='$codigo' WHERE ID='$id'";
     $result = $base->prepare($sqlM);
     $result->execute();
 
@@ -62,12 +63,13 @@ include ('conexion.php');
                 <tr>
                     <td>
                         <label for ="">Link:</label>
-                        <input type="text"  name="link" placeholder="" id="link" value="<?php echo $link;?>">
+                        <input type="text"  name="link" placeholder="" id="link" value="<?php echo "https://www.youtube.com/watch?v=".$link; ?>">
                     </td>
                 </tr> 
                 <tr>
                     <td> 
-                        <input type="submit" name="accion" value="Agregar" />  
+                        <input type="submit" name="accion" value="Agregar" />
+                        <a href="guias.php"><input type="button" value="Volver"></a>  
                     </td>
                 </tr>         
             </table>
@@ -82,11 +84,12 @@ include ('conexion.php');
                     </tr>
                 </thead>
                 <?php 
-                foreach ($lista as $result ) {?>				
+                foreach ($lista as $result ) {
+                     $video = $result['link'];?>				
                     <tr>
                         <td> <?php echo $result['titulo'];  ?> </td>
                         <td> <?php if($result['descripcion']!=''){echo $result['descripcion'] ; } ?></td>
-                        <td> <?php echo $result['link'];  ?> </td>
+                        <td> <?php echo "<iframe width=\"500\" height=\"500\" src=\"https://www.youtube.com/embed/$video\"></iframe>";  ?> </td>
                     <td>
                         <form accion="" method="POST">	
                             <input type="hidden" name="id" value="<?php echo $result['id']; ?>">				
