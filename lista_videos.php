@@ -1,10 +1,10 @@
 <?php
-$api_key="AIzaSyBMaAjQlKgFqNhyUT4s8bJIBJ5wLJCsg1k"; // Ingresar tu Api Key
-$channel_id="UCGvlp-Y8tfYZ5vvotEkujVA"; // El Id del canal
+$api_key="AIzaSyBM"; // Ingresar tu Api Key
+$channel_id="UCA"; // El Id del canal
 $max_results="50"; // Resultados a mostrar
  
 // LLamar a la API para obtener la lista de videos en JSON
-$query = "https://www.googleapis.com/youtube/v3/search?key=$api_key&channelId=$channel_id&part=snippet,id&order=date&maxResults=".$max_results;
+$query = "https://www.googleapis.com/;
 $videoList = file_get_contents($query);
  
 
